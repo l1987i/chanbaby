@@ -24,7 +24,7 @@
 
 ## 🎬 使用演示
 
-
+https://github.com/user-attachments/assets/82529244-b3d6-4ca6-b5d6-0efe9c49da4a
 
 ## 🚀 快速开始
 
@@ -101,7 +101,7 @@
 
 如有问题或建议，欢迎通过以下方式反馈：
 
-- 提交 [Issue](https://github.com/your-username/excel2chanjing/issues)
+- 提交 [Issue](https://github.com/l1987i/chanboby/issues)
 
 ---
 
