@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Excel2蝉镜</title>
+    <style>
+        body {
+            width: 360px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .header {
+            width: 360px;
+            background-image: url('images/banner.png');
+            background-size: 100% auto;
+            background-position: center;
+            background-repeat: no-repeat;
+            aspect-ratio: 360/108;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .step {
+            margin-bottom: 20px;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-number {
+            background: #f0f0f0;
+            color: #666;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .required {
+            color: #ff4d4f;
+            margin-left: 4px;
+        }
+
+        .file-input-wrapper {
+            border: 2px dashed #e8e8e8;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .file-input-wrapper:hover {
+            border-color: #1890ff;
+            background: #f0f7ff;
+        }
+
+        .file-input-wrapper.has-file {
+            border-style: solid;
+            border-color: #52c41a;
+            background: #f6ffed;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-placeholder {
+            color: #8c8c8c;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-placeholder:before {
+            content: "📄";
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .file-name {
+            color: #52c41a;
+            font-size: 14px;
+            word-break: break-all;
+            display: none;
+            padding: 0 12px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:hover,
+        input[type="number"]:hover {
+            border-color: #40a9ff;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #40a9ff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        .example {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            accent-color: #FF5B2E;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff7a45 0%, #ff4d4f 100%);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .start-btn:before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background-image: url('images/playicon.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .start-btn:hover {
+            opacity: 0.9;
+        }
+
+        .start-btn:disabled {
+            background: #d9d9d9;
+            cursor: not-allowed;
+        }
+
+        .start-btn:disabled:before {
+            opacity: 0.5;
+        }
+
+        .status-bar {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .status-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+        }
+
+        .status-text:hover::after {
+            content: attr(data-full-text);
+            position: absolute;
+            left: 0;
+            top: -30px;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: normal;
+            word-break: break-all;
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        .status-text:hover::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: -6px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid rgba(0, 0, 0, 0.75);
+            z-index: 1000;
+        }
+
+        .debug-toggle {
+            color: #1890ff;
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: underline;
+        }
+
+        #debug {
+            margin-top: 16px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none; /* 默认隐藏 */
+        }
+
+        #debug.show {
+            display: block; /* 添加show类时显示 */
+        }
+
+        .debug-entry {
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-icon {
+            animation: spin 1s linear infinite;
+            display: none;
+            margin-right: 8px;
+        }
+
+        .running .loading-icon {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="header"></div>
+
+    <div class="content">
+        <div class="step">
+            <div class="step-title">
+                第1步、上传包含口播脚本文本的.csv文件
+            </div>
+            <div class="file-input-wrapper" id="fileInputWrapper">
+                <input type="file" id="fileInput" class="file-input" accept=".csv,.xlsx,.xls">
+                <div class="file-placeholder">未选择任何文件</div>
+                <div class="file-name"></div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-title">
+                第2步、输入csv文件中的脚本所在位置
+            </div>
+            <input type="text" id="cellRange" placeholder="例如：A1:A10，生成视频时将按顺序读取脚本">
+        </div>
+
+        <div class="step">
+            <div class="step-title">
+                第3步、设置自动化执行次数
+            </div>
+            <input type="number" id="loopCount" min="1" value="1">
+            <div class="example">最小为1，请根据脚本数量设置</div>
+        </div>
+
+        <div class="checkbox-wrapper">
+            <input type="checkbox" id="keepTabs" checked>
+            <label for="keepTabs" class="checkbox-label">执行完成的标签页不关闭</label>
+        </div>
+
+        <button id="startBtn" class="start-btn">
+            <span class="loading-icon">⚡</span>
+            跑起来，奥利给
+        </button>
+
+        <div class="status-bar">
+            <span class="status-text" id="status">状态：就绪</span>
+            <span class="debug-toggle" id="debugToggle">显示调试信息</span>
+        </div>
+
+        <div id="debug"></div>
+    </div>
+
+    <script src="xlsx.full.min.js"></script>
+    <script src="utils.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html> 

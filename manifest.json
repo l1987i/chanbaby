@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Excel2蝉镜",
+  "version": "1.0",
+  "description": "自动化视频批量创作插件",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://www.chanjing.cc/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.chanjing.cc/*"],
+      "js": ["xlsx.full.min.js", "utils.js", "content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["xlsx.full.min.js", "utils.js"],
+      "matches": ["https://www.chanjing.cc/*"]
+    }
+  ]
+} 
